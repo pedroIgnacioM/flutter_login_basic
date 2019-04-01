@@ -1,74 +1,96 @@
 import 'package:flutter/material.dart';
-import 'home_page.dart';
+
 
 class LoginScreen extends StatelessWidget{
-  BuildContext context;
-
   @override
-  Widget build(BuildContext contex){
-    this.context = contex;
+  Widget build(BuildContext context) {
+    final title = 'Login';
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text(title),
       ),
-      body: Column(
-        children: <Widget>[
-          loginBox(),
-        ],
+      body: LoginForm(),
+    );
+  }
+}
+
+class LoginForm extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return LoginFormState();
+  }
+}
+
+class LoginFormState extends State<LoginForm>{
+  final _formKey = GlobalKey<FormState>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Form(
+      key: _formKey,
+      child: Container(
+        margin: EdgeInsets.all(20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(bottom: 5.0),
+              child: usernameField(),
+            ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 5.0),
+              child: passwordField(),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 5.0),
+                child: submitButton(),
+              ),
+            ),
+          ],
+        ),
       )
     );
   }
 
-  Widget loginBox(){
-    return Container(
-        margin: EdgeInsets.all(20.0),
-        padding: EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.black)
-        ),
-        child: Column(
-          children: <Widget>[
-            usernameField(),
-            passwordField(),
-            submitButton(),
-          ],
-        ),
-      );
-  }
-
-  Widget usernameField(){
-    return TextField(
+  TextFormField usernameField(){
+    return TextFormField(
+      autofocus: true,
       decoration: InputDecoration(
-        labelText: 'Username',
+        hintText: 'Username'
       ),
+      validator: (value) {
+        if (value.isEmpty){
+          return 'Este campo no puede estar vacio';
+        }
+      },
     );
   }
 
-  Widget passwordField(){
-    return TextField(
+  TextFormField passwordField(){
+    return TextFormField(
       decoration: InputDecoration(
-        hintText: 'Debe contener almenos 8 carácteres',
-        labelText: 'Password',
+        hintText: 'password'
       ),
+      validator: (value) {
+        if (value.isEmpty){
+          return 'Este campo no puede estar vacio';
+        }
+      },
       obscureText: true,
     );
   }
 
-  Widget submitButton(){
+  RaisedButton submitButton(){
     return RaisedButton(
       onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage())
-        );
+        if (_formKey.currentState.validate()){
+          Scaffold.of(context).showSnackBar(SnackBar(content: Text('Cargando')));
+        }
       },
-      textColor: Colors.white,
-      padding: EdgeInsets.all(1.0),
-      child: Container(
-        padding: EdgeInsets.all(10.0),
-        child: Text('Iniciar sesión'),
-      ),
+      child: Text('Iniciar sesión'),
     );
   }
-
 }

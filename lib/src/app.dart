@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'ui/login_screen.dart';
+import 'ui/home_page.dart';
 
 class App extends StatelessWidget{
 
@@ -8,7 +8,7 @@ class App extends StatelessWidget{
 
     return MaterialApp(
       home: Scaffold(
-        body: LoginScreen(),
+        body: HomePage(),
       ),
     );
 
